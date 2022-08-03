@@ -47,21 +47,23 @@ public class Percolation {
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
-        if (row > n || row < 1)
-            throw new IllegalArgumentException("row " + row + " is not in range 1 to " + n + " .");
-        if (col > n || col < 1)
-            throw new IllegalArgumentException("col " + col + " is not in range 1 to " + n + " .");
+        validate(row, col);
         return union.find(primaryNode) == union.find(place(row, col));
     }
 
     // is the site (row, col) open?
     public boolean isOpen(int row, int col) {
+        validate(row, col);
+        return openGrid[row - 1][col - 1];
+
+    }
+
+    private void validate(int row, int col) {
         if (row > n || row < 1)
             throw new IllegalArgumentException("row " + row + " is not in range 1 to " + n + " .");
         if (col > n || col < 1)
             throw new IllegalArgumentException("col " + col + " is not in range 1 to " + n + " .");
-        return openGrid[row - 1][col - 1];
-
+        return;
     }
 
     // returns the number of open sites

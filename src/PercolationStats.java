@@ -8,6 +8,7 @@ public class PercolationStats {
 
     // perform independent trials on an n-by-n grid
     public PercolationStats(int n, int trials) {
+        validate(n, trials);
         this.trials = trials;
         p = new double[trials];
         for (int i = 0; i < trials; i++) {
@@ -15,7 +16,6 @@ public class PercolationStats {
             while (!mapTrial.percolates()) {
                 int randomRow = StdRandom.uniform(n) + 1, randomCol = StdRandom.uniform(n) + 1;
                 mapTrial.open(randomRow, randomCol);
-                // mapTrial.draw();
             }
             p[i] = mapTrial.numberOfOpenSites() / (double) (n * n);
         }
@@ -41,13 +41,15 @@ public class PercolationStats {
         return mean() + CONFIDENCE * stddev() / Math.sqrt(trials);
     }
 
-    public static void main(String[] args) {
-        int n = Integer.parseInt(/*args[0]*/ "100");
-        int trials = Integer.parseInt(/*args[1]*/ "1000");
+    private void validate(int n, int trials) {
         if (n < 1)
             throw new IllegalArgumentException(n + " is not a positive integer");
         if (trials < 1)
             throw new IllegalArgumentException(trials + " is not a positive integer");
+    }
+
+    public static void main(String[] args) {
+        int n = Integer.parseInt(args[0]), trials = Integer.parseInt(args[1]);
         PercolationStats stats = new PercolationStats(n, trials);
         System.out.println("mean                    = " + stats.mean());
         System.out.println("stddev                  = " + stats.stddev());
